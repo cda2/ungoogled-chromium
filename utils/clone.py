@@ -23,11 +23,13 @@ from _common import ENCODING, add_common_params, get_chromium_version, get_logge
 # Instances of 'src' replaced with UC_OUT, which will be replaced with the output directory
 # custom_deps are set to None since they are large and unused
 # target_* arguments set to match tarball rather than actual build target
+# Modified to use chromium-fork with browser fingerprinting support
+CHROMIUM_FORK_URL = "https://github.com/blc-cruise/chromium-fork.git"
 GC_CONFIG = """\
 solutions = [
   {
     "name": "UC_OUT",
-    "url": "https://chromium.googlesource.com/chromium/src.git",
+    "url": "https://github.com/blc-cruise/chromium-fork.git",
     "managed": False,
     "custom_deps": {
       "UC_OUT/third_party/angle/third_party/VK-GL-CTS/src": None,
@@ -78,7 +80,7 @@ def clone(args): # pylint: disable=too-many-branches, too-many-locals, too-many-
     else:
         run([
             'git', 'clone', '-c', 'advice.detachedHead=false', '-b', chromium_version, '--depth=2',
-            "https://chromium.googlesource.com/chromium/src",
+            CHROMIUM_FORK_URL,
             str(args.output)
         ],
             check=True)
